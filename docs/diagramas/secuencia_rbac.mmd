@@ -1,0 +1,51 @@
+sequenceDiagram
+    autonumber
+    actor Client as Usuario / Cliente UI
+    participant Router as VueRouterGuard (Vue 3)
+    participant MW as PermissionMiddleware (Laravel)
+    participant RBAC as SpatieRBACService (Core)
+    participant Audit as AuditLogService (Gobernanza)
+    participant DB as Base de Datos & Redis
+
+    Note over Client, DB: FASE 1: Asignación de Rol a Usuario (Precondición)
+    Client->>RBAC: assignRoleToUser(userId, roleId, tenantId)
+    activate RBAC
+    RBAC->>DB: INSERT INTO model_has_roles
+    RBAC->>DB: forgetCachedPermissions()
+    DB-->>RBAC: Commit OK
+    RBAC-->>Client: 200 OK (Rol Asignado Exitosamente)
+    deactivate RBAC
+
+    Note over Client, DB: FASE 2: Solicitud de Operación Protegida y Evaluación
+    Client->>Router: Ejecutar Operación (POST /api/v1/emr/soap-notes)
+    activate Router
+    Router->>MW: HTTP POST /api/v1/emr/soap-notes (Bearer Token)
+    activate MW
+    MW->>RBAC: evaluatePermission(userId, tenantId, 'emr.soap.write')
+    activate RBAC
+    RBAC->>DB: Query User Roles & Permissions
+    activate DB
+    DB-->>RBAC: Roles & Permissions Data
+    deactivate DB
+
+    alt Caso 1: Autorización Exitosa (Permiso Concedido)
+        RBAC-->>MW: true (Permission Granted)
+        MW->>MW: executeController()
+        MW-->>Client: HTTP 201 Created { status: "success", data: ... }
+    else Caso 2: Denegación Trazable (Permiso Denegado - 403)
+        RBAC-->>MW: false (Permission Denied)
+        deactivate RBAC
+        MW->>Audit: logDeniedAccessEvent(userId, tenantId, permission, ip)
+        activate Audit
+        Audit->>Audit: generateTraceId() -> UUID "TRC-890D-20260808-001"
+        Audit->>DB: INSERT INTO rbac_audit_logs (trace_id, user_id, tenant_id, permission, timestamp)
+        activate DB
+        DB-->>Audit: Audit Log Saved
+        deactivate DB
+        Audit-->>MW: traceId "TRC-890D-20260808-001"
+        deactivate Audit
+        MW-->>Client: HTTP 403 Forbidden { error: "Acceso denegado", trace_id: "TRC-890D-20260808-001" }
+        deactivate MW
+        Router-->>Client: Renderizar Pantalla 403 con trace_id
+        deactivate Router
+    end

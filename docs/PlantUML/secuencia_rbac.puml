@@ -1,0 +1,64 @@
+@startuml secuencia_rbac
+!theme plain
+title Diagrama UML de Secuencia: Asignación de Rol, Autorización y Denegación Trazable
+
+header Módulo RBAC - Proceso de Autorización y Denegación Trazable
+footer Sistema Hospitalario Integrado (HIS) - Estudiante: Luis David Aroche Contreras
+
+actor "Usuario / Cliente" as Client
+participant "VueRouterGuard\n(Frontend Vue 3)" as RouterGuard
+participant "PermissionMiddleware\n(Laravel API Guard)" as Middleware
+participant "SpatieRBACService\n(Core Authorization)" as RBACService
+participant "AuditLogService\n(Gobernanza y Trazabilidad)" as AuditService
+database "Base de Datos\n& Caché Redis" as DB
+
+== FASE 1: Asignación de Rol a Usuario (Precondición) ==
+Admin -> RBACService : assignRoleToUser(userId, roleId, tenantId)
+activate RBACService
+RBACService -> DB : INSERT INTO model_has_roles (role_id, model_id, tenant_id)
+RBACService -> DB : forgetCachedPermissions() (Invalidar Caché Spatie)
+DB --> RBACService : Commit Confirmado
+RBACService --> Admin : RoleAssignedSuccessResponse (200 OK)
+deactivate RBACService
+
+== FASE 2: Solicitud de Operación Protegida (Autorización & Validación) ==
+Client -> RouterGuard : Navegar / Ejecutar Operación (POST /api/v1/emr/soap-notes)
+activate RouterGuard
+RouterGuard -> RouterGuard : checkClientToken()
+RouterGuard -> Middleware : HTTP POST /api/v1/emr/soap-notes\nHeader: Authorization Bearer <Token>
+activate Middleware
+
+Middleware -> RBACService : evaluatePermission(user_id, tenant_id, 'emr.soap.write')
+activate RBACService
+
+RBACService -> DB : getActiveUserPermissions(user_id, tenant_id)
+activate DB
+DB --> RBACService : Return User Roles & Permissions List
+deactivate DB
+
+alt CASO A: Autorización Exitosa (Permiso Concedido)
+    RBACService --> Middleware : boolean true (Permission Granted)
+    Middleware -> Middleware : proceedToController()
+    Middleware --> Client : HTTP 201 Created\n{ "status": "success", "data": {...} }
+
+else CASO B: Denegación Trazable (Permiso Denegado - 403 Forbidden)
+    RBACService --> Middleware : boolean false (Permission Denied)
+    deactivate RBACService
+
+    Middleware -> AuditService : logDeniedAccessEvent(userId, tenantId, permission, ipAddress, userAgent)
+    activate AuditService
+    AuditService -> AuditService : generateTraceId() -> UUID "TRC-890D-20260808-001"
+    AuditService -> DB : INSERT INTO rbac_audit_logs\n(trace_id, user_id, tenant_id, required_permission, action, timestamp)
+    activate DB
+    DB --> AuditService : Audit Record Persisted
+    deactivate DB
+    AuditService --> Middleware : traceId "TRC-890D-20260808-001"
+    deactivate AuditService
+
+    Middleware --> Client : HTTP 403 Forbidden\n{\n  "error": "Acceso denegado. No posee el permiso emr.soap.write",\n  "trace_id": "TRC-890D-20260808-001",\n  "timestamp": "2026-08-08T04:14:00Z"\n}
+    deactivate Middleware
+    RouterGuard --> Client : Renderizar Pantalla 403 Access Denied con trace_id
+    deactivate RouterGuard
+end
+
+@enduml
