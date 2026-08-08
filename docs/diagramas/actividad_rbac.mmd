@@ -1,0 +1,31 @@
+flowchart TD
+    A[Inicio: Usuario solicita ejecución de operación médica/admin] --> B{¿JWT Token Válido?}
+    
+    B -- No --> C[Redirigir a Login 401 Unauthorized]
+    
+    B -- Sí --> D[Vue Router Guard envía HTTP Request con Bearer Token]
+    
+    D --> E[Laravel Permission Guard intercepta solicitud en API]
+    
+    E --> F{¿Rol asignado existe y está activo?}
+    
+    F -- No --> G[Generar trace_id UUID único]
+    G --> H[Registrar Evento Audit: ROLE_INACTIVE]
+    H --> I[Responder HTTP 403 Forbidden con trace_id]
+    
+    F -- Sí --> J{¿El Rol posee el permiso específico?}
+    
+    J -- No: Denegación Trazable --> K[Generar trace_id UUID único ej. TRC-890D-2026-001]
+    K --> L[Persistir Registro Audit: USER, TENANT, PERMISSION, IP, TIMESTAMP, TRACE_ID]
+    L --> M[Responder JSON HTTP 403 Forbidden con trace_id]
+    M --> N[Frontend muestra Pantalla Access Denied 403 con trace_id para soporte]
+    
+    J -- Sí: Autorización Concedida --> O[Ejecutar Controlador de la Operación]
+    O --> P[Persistir Cambios en Base de Datos]
+    P --> Q[Responder HTTP 200 OK / 201 Created]
+    Q --> R[Renderizar Resultado Exitoso en UI Frontend]
+    
+    C --> S[Fin]
+    I --> S
+    N --> S
+    R --> S

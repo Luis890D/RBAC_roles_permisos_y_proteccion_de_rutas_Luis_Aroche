@@ -1,0 +1,71 @@
+@startuml actividad_rbac
+!theme plain
+title Diagrama UML de Actividad: Asignación de Rol, Autorización de Operación y Denegación Trazable
+
+header Módulo RBAC - Proceso Integrado
+footer Sistema Hospitalario Integrado (HIS) - Estudiante: Luis David Aroche Contreras
+
+|#E0F2FE| SuperAdministrador |
+|#FEF3C7| Usuario Autenticado |
+|#E0E7FF| Frontend (Vue 3 / Router Guard) |
+|#DCFCE7| Backend API (Laravel Middleware / Spatie RBAC) |
+|#FEE2E2| Servicio de Auditoría & DB |
+
+|SuperAdministrador|
+start
+:Seleccionar Usuario y Asignar Rol en el Tenant;
+:Persistir relación User-Role en Base de Datos;
+:Invalidar Caché de Permisos de Spatie;
+stop
+
+|Usuario Autenticado|
+start
+:Solicitar ejecución de operación médica/administrativa;
+note right: Ejemplo: POST /api/v1/emr/soap-notes
+
+|Frontend (Vue 3 / Router Guard)|
+:Interceptar navegación o envío de formulario;
+if (¿Usuario autenticado con Token JWT válido?) then (No)
+  :Redirigir a Pantalla de Login (401 Unauthorized);
+  stop
+else (Sí)
+  :Adjuntar Header 'Authorization: Bearer <Token>' y enviar Request HTTP;
+endif
+
+|Backend API (Laravel Middleware / Spatie RBAC)|
+:Middleware 'PermissionGuard' intercepta la solicitud HTTP;
+:Extraer user_id, tenant_id y permiso requerido de la ruta;
+
+if (¿El Rol asignado al Usuario existe y está activo?) then (No)
+  |Servicio de Auditoría & DB|
+  :Generar UUID de Trazabilidad (trace_id);
+  :Registrar Evento Audit: 'ROLE_INACTIVE_OR_REVOKED';
+  |Backend API (Laravel Middleware / Spatie RBAC)|
+  :Responder JSON HTTP 403 Forbidden con trace_id;
+  |Frontend (Vue 3 / Router Guard)|
+  :Mostrar pantalla 'Acceso Denegado (403)' con código de rastreo;
+  stop
+else (Sí)
+  |Backend API (Laravel Middleware / Spatie RBAC)|
+  :Consultar permisos asignados al Rol (Spatie / Cache Redis);
+  if (¿El Rol posee el permiso específico requerido?) then (No / Denegación Trazable)
+    |Servicio de Auditoría & DB|
+    :Generar UUID único trace_id (ej. TRC-890D-2026-001);
+    :Persistir Registro de Denegación en Bitácora\n(user_id, tenant_id, required_permission, ip, timestamp, trace_id);
+    |Backend API (Laravel Middleware / Spatie RBAC)|
+    :Formatear Respuesta JSON de Error 403 Forbidden\n{ "error": "Acceso Denegado", "trace_id": "TRC-890D-2026-001" };
+    |Frontend (Vue 3 / Router Guard)|
+    :Notificar al usuario 'Acceso Denegado' e informar trace_id para soporte;
+    stop
+  else (Sí / Autorización Concedida)
+    |Backend API (Laravel Middleware / Spatie RBAC)|
+    :Transferir ejecución al Controlador de la Operación;
+    :Procesar Lógica de Negocio y Persistir Cambios;
+    :Responder JSON HTTP 200 OK / 201 Created;
+    |Frontend (Vue 3 / Router Guard)|
+    :Renderizar Resultado Exitoso en Pantalla del Usuario;
+    stop
+  endif
+endif
+
+@enduml
