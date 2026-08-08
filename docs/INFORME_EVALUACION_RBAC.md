@@ -266,12 +266,12 @@ Si el docente solicita: *"Agregue una regla de atención de emergencia (Break-Gl
 
 ### 7.1. Historial de Commits (`git log --oneline`)
 ```text
-* e890d06 (HEAD -> main, tag: v1.0.0) chore(release): preparar portada oficial y crear etiqueta v1.0.0
-* d890d05 docs(informe): consolidar matriz de trazabilidad, declaracion de IA y guia de defensa oral
-* c890d04 docs(uml): agregar diagrama de secuencia con autorizacion y denegacion trazable
-* b890d03 docs(uml): agregar diagrama de actividad con flujo de decisiones, excepciones y trazabilidad
-* a890d02 docs(uml): agregar diagrama de casos de uso (PlantUML y Mermaid) y delimitacion de actores
-* 9890d01 feat(init): inicializar repositorio RBAC y estructura de documentos
+358dce8 (HEAD -> main, tag: v1.0.0) chore(release): preparar portada oficial y crear etiqueta v1.0.0
+73b6ee1 docs(informe): consolidar matriz de trazabilidad, declaracion de IA y guia de defensa oral
+a46ca2f docs(uml): agregar diagrama de secuencia con autorizacion y denegacion trazable
+096a0d2 docs(uml): agregar diagrama de actividad con flujo de decisiones, excepciones y trazabilidad
+7dc7a86 docs(uml): agregar diagrama de casos de uso (PlantUML y Mermaid) y delimitacion de actores
+e79ff4a feat(init): inicializar repositorio RBAC y estructura de documentos
 ```
 
 ### 7.2. Árbol de Archivos del Repositorio
