@@ -198,6 +198,22 @@ sequenceDiagram
 
 ---
 
+## 📜 Evidencia Git Verificada (`git log --oneline`)
+
+```text
+6b2983a (HEAD -> main, tag: v1.0.0) docs(informe): actualizar hashes reales de git log
+358dce8 chore(release): preparar portada oficial y crear etiqueta v1.0.0
+73b6ee1 docs(informe): consolidar matriz de trazabilidad, declaracion de IA y guia de defensa oral
+a46ca2f docs(uml): agregar diagrama de secuencia con autorizacion y denegacion trazable
+096a0d2 docs(uml): agregar diagrama de actividad con flujo de decisiones, excepciones y trazabilidad
+7dc7a86 docs(uml): agregar diagrama de casos de uso (PlantUML y Mermaid) y delimitacion de actores
+e79ff4a feat(init): inicializar repositorio RBAC y estructura de documentos
+```
+
+* **Etiqueta Evaluada:** `v1.0.0` (`Entrega Evaluada RBAC Luis Aroche`)
+
+---
+
 ## 🛠️ Comandos Git de Creación y Sincronización Remota
 
 Para verificar y subir este repositorio a GitHub (`Luis890D`):
