@@ -1,0 +1,43 @@
+flowchart LR
+    %% Actores
+    Admin(["👤 SuperAdministrador / IT Admin"])
+    User(["👤 Usuario Autenticado\nMédico · Enfermera · Lab"])
+    MW(["⚙️ Middleware API\nLaravel Permission Guard"])
+    VG(["⚙️ Router Guard\nVue 3 Navigation Guard"])
+    Audit(["🗄️ Servicio de Auditoría\nLog DB & Trazabilidad"])
+
+    %% Sistema RBAC
+    subgraph HIS ["🏥 Sistema Hospitalario Integrado — Módulo RBAC"]
+        direction TB
+        CU1(["CU-RBAC-01\nAsignar Rol y Permisos a Usuario"])
+        CU2(["CU-RBAC-02\nValidar Permiso y Autorizar Operación en API"])
+        CU3(["CU-RBAC-03\nDenegar Operación y Registrar Bitácora Trazable"])
+        CU4(["CU-RBAC-04\nProteger Navegación y UI en Frontend"])
+        CU5(["CU-RBAC-05\nConsultar Matriz de Roles y Permisos"])
+    end
+
+    %% Relaciones Actor -> Caso de Uso
+    Admin --> CU1
+    Admin --> CU5
+
+    User --> CU4
+
+    MW --> CU2
+    MW --> CU3
+
+    VG --> CU4
+
+    CU3 -. "«emitir trace_id»" .-> Audit
+
+    %% Relaciones entre Casos de Uso
+    CU1 -. "«include»" .-> CU5
+    CU2 -. "«include»" .-> CU5
+    CU3 -. "«extend»" .-> CU2
+
+    %% Estilos
+    classDef actor fill:#1e3a5f,stroke:#3b82f6,color:#e0f2fe
+    classDef usecase fill:#1e293b,stroke:#64748b,color:#f8fafc
+    classDef system fill:#0f172a,stroke:#334155,color:#94a3b8
+
+    class Admin,User,MW,VG,Audit actor
+    class CU1,CU2,CU3,CU4,CU5 usecase

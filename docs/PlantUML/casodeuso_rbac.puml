@@ -1,0 +1,55 @@
+@startuml casodeuso_rbac
+!theme plain
+skinparam packageStyle rectangle
+skinparam actorStyle stickman
+
+header Módulo RBAC - Sistema Hospitalario Integrado (HIS)
+title Diagrama UML de Casos de Uso: Asignación de Rol, Autorización de Operación y Denegación Trazable
+
+left to right direction
+
+' --- Definición de Actores ---
+actor "SuperAdministrador\n/ IT Admin" as Admin << Humano >>
+actor "Usuario Autenticado\n(Médico / Enfermera / Lab)" as User << Humano >>
+actor "Middleware Guard\nAPI Laravel" as Middleware << Sistema Backend >>
+actor "Vue Router Guard\nFrontend Vue 3" as FrontendGuard << Sistema Frontend >>
+actor "Servicio de Auditoría\n/ Log DB" as AuditService << Sistema Secundario >>
+
+' --- Delimitación del Sistema ---
+rectangle "Módulo RBAC (Roles, Permisos y Protección de Rutas)" {
+    
+    usecase "CU-RBAC-01: Asignar Rol y Permisos\na Usuario" as CU_AsignarRol
+    usecase "CU-RBAC-02: Validar Permiso y Autorizar\nOperación en API" as CU_Autorizar
+    usecase "CU-RBAC-03: Denegar Operación y Registrar\nBitácora Trazable (403)" as CU_DenegarTrazable
+    usecase "CU-RBAC-04: Proteger Navegación y UI\nen Frontend" as CU_ProtegerUI
+    usecase "CU-RBAC-05: Consultar Matriz de Roles\ny Permisos del Tenant" as CU_ConsultarMatriz
+    
+}
+
+' --- Relaciones Actor -> Caso de Uso ---
+Admin --> CU_AsignarRol
+Admin --> CU_ConsultarMatriz
+
+User --> CU_ProtegerUI
+
+Middleware --> CU_Autorizar
+Middleware --> CU_DenegarTrazable
+
+FrontendGuard --> CU_ProtegerUI
+
+CU_DenegarTrazable --> AuditService : << emitir log con trace_id >>
+
+' --- Relaciones entre Casos de Uso ---
+CU_AsignarRol ..> CU_ConsultarMatriz : << include >>
+CU_Autorizar ..> CU_ConsultarMatriz : << include >>
+CU_DenegarTrazable ..> CU_Autorizar : << extend >>
+
+note right of CU_DenegarTrazable
+  Garantiza trazabilidad de seguridad:
+  Al denegar el acceso (403 Forbidden),
+  se genera un UUID trace_id único que
+  vincula al usuario, tenant, IP y timestamp
+  en el servicio de auditoría.
+end note
+
+@enduml
