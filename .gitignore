@@ -1,0 +1,15 @@
+# Temporales y editores
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+.vscode/
+.idea/
+
+# Entorno y dependencias
+node_modules/
+vendor/
+.env
+
+# Archivos auxiliares de IDE / Agentes
+.gemini/
