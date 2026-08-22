@@ -58,7 +58,7 @@ final class PdoUserRepository implements UserRepositoryInterface
     {
         // Paso 1: obtener el registro base del usuario
         $stmt = $this->pdo->prepare(
-            "SELECT id, username FROM users WHERE {$condition} LIMIT 1"
+            "SELECT u.id, u.username FROM users u WHERE {$condition} LIMIT 1"
         );
         $stmt->execute($params);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);

@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+use MicroHIS\Application\DTO\AssignRoleRequest;
+use MicroHIS\Application\DTO\AuthorizeRequest;
+use MicroHIS\Domain\Exception\AccessDeniedException;
+use MicroHIS\Domain\Exception\RoleNotFoundException;
+
 /**
  * CliRunner — Punto de entrada de demostración del Micro-HIS RBAC.
  *
@@ -16,15 +21,16 @@ declare(strict_types=1);
  * Todos los datos son ficticios; no hay información clínica real.
  */
 
-require_once __DIR__ . '/../../bootstrap.php';
+// Cargar Composer autoloader si está disponible, o el bootstrap manual
+$vendorAutoload = __DIR__ . '/../../vendor/autoload.php';
+$bootstrap      = __DIR__ . '/../../bootstrap.php';
 
-use MicroHIS\Application\DTO\AssignRoleRequest;
-use MicroHIS\Application\DTO\AuthorizeRequest;
-use MicroHIS\Domain\Exception\AccessDeniedException;
-use MicroHIS\Domain\Exception\RoleNotFoundException;
+if (file_exists($vendorAutoload)) {
+    require_once $vendorAutoload;
+}
 
 // Cargar contenedor DI desde bootstrap
-$container = require __DIR__ . '/../../bootstrap.php';
+$container = require $bootstrap;
 
 $assignRoleUseCase        = $container['assignRoleUseCase'];
 $authorizeOperationUseCase = $container['authorizeOperationUseCase'];
