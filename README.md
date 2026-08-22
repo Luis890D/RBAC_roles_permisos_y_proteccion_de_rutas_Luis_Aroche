@@ -308,8 +308,11 @@ sequenceDiagram
 ## 📜 Evidencia Git Verificada (`git log --oneline`)
 
 ```text
-6b2983a (HEAD -> main, tag: v1.0.0) docs(informe): actualizar hashes reales de git log
-358dce8 chore(release): preparar portada oficial y crear etiqueta v1.0.0
+d0130b7 (HEAD -> main, tag: v1.1.0) fix(persistence): corregir alias SQL en PdoUserRepository y require en CliRunner
+af4e249 feat(src): implementar capas Domain y Application RBAC — entidades, excepciones, interfaces y casos de uso
+8ad3f4c docs(readme): agregar evidencia verificada de git log e historial de commits
+6b2983a docs(informe): actualizar hashes reales de git log
+358dce8 (tag: v1.0.0) chore(release): preparar portada oficial y crear etiqueta v1.0.0
 73b6ee1 docs(informe): consolidar matriz de trazabilidad, declaracion de IA y guia de defensa oral
 a46ca2f docs(uml): agregar diagrama de secuencia con autorizacion y denegacion trazable
 096a0d2 docs(uml): agregar diagrama de actividad con flujo de decisiones, excepciones y trazabilidad
@@ -317,7 +320,8 @@ a46ca2f docs(uml): agregar diagrama de secuencia con autorizacion y denegacion t
 e79ff4a feat(init): inicializar repositorio RBAC y estructura de documentos
 ```
 
-* **Etiqueta Evaluada:** `v1.0.0` (`Entrega Evaluada RBAC Luis Aroche`)
+* **Etiqueta Evaluada (código ejecutable):** `v1.1.0` (`Código PHP 8.2 RBAC ejecutable — 8 pruebas PHPUnit OK`)
+* **Etiqueta Previa (solo UML):** `v1.0.0`
 
 ---
 
