@@ -27,10 +27,63 @@
 
 ```text
 RBAC_roles_permisos_y_proteccion_de_rutas_Luis_Aroche/
-├── .gitignore                                   # Filtros de archivos
+├── .gitignore
+├── .env.example                                 # Configuración de entorno (sin secretos)
 ├── README.md                                    # Portada Oficial y Documento Principal
+├── DECLARACION_IA.md                            # Declaración transparente de uso de IA
+├── composer.json                                # Dependencias PHP (PHPUnit dev)
+├── phpunit.xml                                  # Configuración de pruebas automatizadas
+├── bootstrap.php                                # DI manual: autoloader + PDO + contenedor
+│
+├── src/                                         # Código fuente PHP 8.2+ vanilla
+│   ├── Domain/                                  # Capa de Dominio (pura, sin dependencias)
+│   │   ├── Entity/
+│   │   │   ├── User.php                         # Entidad Usuario
+│   │   │   ├── Role.php                         # Entidad Rol
+│   │   │   ├── Permission.php                   # Value Object Permiso
+│   │   │   └── AuditLog.php                     # Entidad de Auditoría trazable
+│   │   ├── Exception/
+│   │   │   ├── AccessDeniedException.php        # Denegación con trace_id
+│   │   │   ├── RoleNotFoundException.php
+│   │   │   └── UserNotFoundException.php
+│   │   └── Repository/                          # Interfaces (puertos)
+│   │       ├── UserRepositoryInterface.php
+│   │       ├── RoleRepositoryInterface.php
+│   │       └── AuditLogRepositoryInterface.php
+│   │
+│   ├── Application/                             # Capa de Aplicación (casos de uso)
+│   │   ├── UseCase/
+│   │   │   ├── AssignRoleUseCase.php            # CU-RBAC-01
+│   │   │   └── AuthorizeOperationUseCase.php    # CU-RBAC-02 / CU-RBAC-03
+│   │   └── DTO/
+│   │       ├── AssignRoleRequest.php
+│   │       ├── AuthorizeRequest.php
+│   │       └── AuthorizeResponse.php
+│   │
+│   ├── Persistence/                             # Capa de Persistencia (adaptadores PDO)
+│   │   ├── PdoUserRepository.php
+│   │   ├── PdoRoleRepository.php
+│   │   └── PdoAuditLogRepository.php
+│   │
+│   └── Presentation/                            # Capa de Presentación (CLI)
+│       └── CliRunner.php                        # Ejecuta los 3 escenarios demostrables
+│
+├── database/
+│   ├── schema.sql                               # Esquema SQLite (6 tablas + índices)
+│   └── seed.sql                                 # Datos ficticios (usuarios, roles, permisos)
+│
+├── tests/
+│   ├── Stub/                                    # Dobles de prueba (sin BD real)
+│   │   ├── InMemoryUserRepository.php
+│   │   ├── InMemoryRoleRepository.php
+│   │   └── InMemoryAuditLogRepository.php
+│   └── Unit/
+│       ├── AuthorizeOperationTest.php           # 4 pruebas: happy path, dominio, persistencia
+│       └── AssignRoleTest.php                   # 4 pruebas: happy path, dominio, usuario, persistencia
+│
 └── docs/
     ├── INFORME_EVALUACION_RBAC.md               # Informe Técnico Completo
+    ├── README-INSTALACION-BACKEND.md            # Guía de instalación PHP
     ├── PlantUML/                                # Fuentes Editables PlantUML (.puml)
     │   ├── casodeuso_rbac.puml
     │   ├── actividad_rbac.puml
@@ -40,6 +93,60 @@ RBAC_roles_permisos_y_proteccion_de_rutas_Luis_Aroche/
         ├── actividad_rbac.mmd
         └── secuencia_rbac.mmd
 ```
+
+---
+
+## 🚀 Instrucciones de Ejecución
+
+### Requisitos
+
+- PHP 8.2+ (XAMPP en Windows o nativo en Linux/macOS)
+- Composer (para PHPUnit)
+- SQLite incluido en PHP por defecto
+
+### 1. Instalar dependencias de desarrollo
+
+```bash
+composer install
+```
+
+### 2. Ejecutar demostración CLI (los 3 escenarios del flujo RBAC)
+
+```bash
+php src/Presentation/CliRunner.php
+```
+
+**Salida esperada:**
+
+```
+════════════════════════════════════════════════════════════
+   Micro-HIS RBAC — Demostración de Flujos
+   Estudiante: Luis David Aroche Contreras (Luis890D)
+════════════════════════════════════════════════════════════
+
+── Escenario 1: Asignación de Rol ──────────────────────────
+[ASSIGN OK]  Rol 'medico' (id=1) asignado a 'dr.garcia' (id=1)
+
+── Escenario 2: Autorización Exitosa (Happy Path) ──────────
+[ALLOW  200]  dr.garcia → emr.soap.write
+              → HTTP 200 OK | Operación autorizada correctamente.
+
+── Escenario 3: Denegación Trazable ────────────────────────
+[DENY   403]  dr.garcia → admin.user.delete
+              → HTTP 403 Forbidden
+              → trace_id: TRC-890D-20260821-XXXXXX
+
+── Auditoría persistida en base de datos ────────────────────
+  ✗ [DENIED] user=1 perm=admin.user.delete ip=192.168.10.55 trace=TRC-890D-20260821-XXXXXX
+```
+
+### 3. Ejecutar pruebas unitarias
+
+```bash
+./vendor/bin/phpunit tests/ --testdox
+```
+
+**Resultado esperado:** 8 pruebas, 0 fallos.
 
 ---
 

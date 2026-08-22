@@ -1,0 +1,35 @@
+{
+    "name": "luis890d/micro-his-rbac",
+    "description": "Micro-HIS RBAC: roles, permisos y proteccion de rutas — PHP 8.2+ vanilla sin framework",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Luis David Aroche Contreras",
+            "role": "Desarrollador"
+        }
+    ],
+    "require": {
+        "php": ">=8.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MicroHIS\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MicroHIS\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "demo": "php src/Presentation/CliRunner.php"
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
