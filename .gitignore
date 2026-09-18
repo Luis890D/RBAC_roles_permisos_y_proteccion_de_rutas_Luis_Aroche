@@ -15,5 +15,6 @@ composer.lock
 # Base de datos SQLite generada en ejecución (no versionar)
 database/rbac_his.sqlite
 
-# Archivos auxiliares de IDE / Agentes
+# Archivos auxiliares de IDE / Agentes / PHPUnit
 .gemini/
+.phpunit.result.cache

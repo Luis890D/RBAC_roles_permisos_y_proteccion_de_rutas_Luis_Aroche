@@ -78,11 +78,22 @@ c2a7eae docs(readme): add missing ASII student assignments
 ```text
 docs/
 ├── README-INSTALACION-BACKEND.md
-├── declaracion-ia-y-prompts.md
-├── semana-01-actores-alcance-casos-de-uso.md
-├── semana-02-rf-rnf-criterios-aceptacion-solid.md
 ├── weekly-plan.md
-└── worktree-guide.md
+├── worktree-guide.md
+└── RBAC/
+    ├── README.md
+    ├── gantt-rbac-completo.md
+    ├── asignacion-individual-semana-1-2.md
+    ├── asignacion-individual-semana-3-5.md
+    ├── semana-01/
+    ├── semana-02/
+    ├── semana-03/
+    ├── semana-04/
+    ├── semana-05/
+    ├── semana-06/
+    └── Planificacion/
+        ├── declaracion-ia-y-prompts.md
+        └── implementation_plan.md
 ```
 
 ---
