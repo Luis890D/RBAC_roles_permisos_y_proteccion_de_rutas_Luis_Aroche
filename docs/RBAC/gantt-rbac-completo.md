@@ -244,11 +244,11 @@ gantt
 | **S4** | Capas, Repositorio, DTOs y Enums | [`semana-04/semana-04-arquitectura-capas-repositorio.md`](semana-04/semana-04-arquitectura-capas-repositorio.md) | ✅ Completado |
 | **S5** | Contrato API REST y Plan Git/Worktree | [`semana-05/semana-05-api-rest-contrato-integracion.md`](semana-05/semana-05-api-rest-contrato-integracion.md) | ✅ Completado |
 | **S6** | Evaluación Parcial 1 | [`semana-06/README.md`](semana-06/README.md) | ⏳ Pendiente |
-| **S7** | Diseño Componentes y Refactorización | [`semana-07/README.md`](semana-07/README.md) | ⏳ Planificado |
-| **S8** | Flujo UX por Rol y Wireframes | [`semana-08/README.md`](semana-08/README.md) | ⏳ Planificado |
-| **S9** | Usabilidad, Accesibilidad y Checklist | [`semana-09/README.md`](semana-09/README.md) | ⏳ Planificado |
-| **S10** | Diseño Responsive y Movilidad | [`semana-10/README.md`](semana-10/README.md) | ⏳ Planificado |
-| **S11** | Mockup y Prototipo Navegable | [`semana-11/README.md`](semana-11/README.md) | ⏳ Planificado |
+| **S7** | Diseño Componentes y Refactorización | [`semana-07/semana-07-diseno-componentes-refactorizacion.md`](semana-07/semana-07-diseno-componentes-refactorizacion.md) | ✅ Completado |
+| **S8** | Flujo UX por Rol y Wireframes | [`semana-08/semana-08-ux-user-flow.md`](semana-08/semana-08-ux-user-flow.md) | ✅ Completado |
+| **S9** | Usabilidad, Accesibilidad y Checklist | [`semana-09/semana-09-usabilidad-accesibilidad.md`](semana-09/semana-09-usabilidad-accesibilidad.md) | ✅ Completado |
+| **S10** | Diseño Responsive y Movilidad | [`semana-10/semana-10-responsive-movilidad.md`](semana-10/semana-10-responsive-movilidad.md) | ✅ Completado |
+| **S11** | Mockup y Prototipo Navegable | [`semana-11/semana-11-mockups-prototipo.md`](semana-11/semana-11-mockups-prototipo.md) | ✅ Completado |
 | **S12** | Evaluación Parcial 2 | [`semana-12/README.md`](semana-12/README.md) | ⏳ Pendiente |
 | **S13** | Plan de Revisión Técnica Formal | [`semana-13/README.md`](semana-13/README.md) | ⏳ Planificado |
 | **S14** | Plan SQA, Métricas y Riesgos | [`semana-14/README.md`](semana-14/README.md) | ⏳ Planificado |

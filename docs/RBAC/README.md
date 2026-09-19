@@ -26,16 +26,16 @@ La documentación se encuentra estructurada modularmente en carpetas dedicadas p
 
 ---
 
-### 🎨 Bloque Parcial 2: Componentes, UX y Movilidad (Semanas 7 a 12 — Planificado)
+### 🎨 Bloque Parcial 2: Componentes, UX y Movilidad (Semanas 7 a 12)
 
-| Semana | Tema ASII | Entregable Planificado | Estado |
-|:---:|---|---|:---:|
-| **Semana 07** | Diseño de Componentes y Refactorización | Diagrama de componentes + refactorización conceptual y desacoplamiento. | ⏳ Planificado |
-| **Semana 08** | Diseño de Experiencia de Usuario (UX) | User flow por rol + wireframes de interfaz RBAC + estados y ayudas. | ⏳ Planificado |
-| **Semana 09** | Evaluación de Usabilidad y Accesibilidad | Checklist WCAG 2.1 AA + matriz de hallazgos + plan de mejoras. | ⏳ Planificado |
-| **Semana 10** | Diseño para Movilidad | Propuesta responsive para tablets clínicas y smartphones. | ⏳ Planificado |
-| **Semana 11** | Mockups y Prototipo Navegable | Prototipo interactivo navegable desktop/móvil (Figma / Canva). | ⏳ Planificado |
-| **Semana 12** | **Segunda Evaluación Parcial** | Defensa teórica y práctica de Componentes, UX y Movilidad. | ⏳ **Pendiente** |
+| Semana | Tema ASII | Documentos y Entregables | Carpeta | Estado |
+|:---:|---|---|:---:|:---:|
+| **Semana 07** | Diseño de Componentes y Refactorización | • [`semana-07-diseno-componentes-refactorizacion.md`](semana-07/semana-07-diseno-componentes-refactorizacion.md) (Diagrama de componentes, catálogo, refactorización SOLID) | [📂 `semana-07/`](semana-07/README.md) | ✅ **Completado** |
+| **Semana 08** | Diseño de Experiencia de Usuario (UX) | • [`semana-08-ux-user-flow.md`](semana-08/semana-08-ux-user-flow.md) (User flow por rol, wireframes, estados del sistema, microcopy) | [📂 `semana-08/`](semana-08/README.md) | ✅ **Completado** |
+| **Semana 09** | Evaluación de Usabilidad y Accesibilidad | • [`semana-09-usabilidad-accesibilidad.md`](semana-09/semana-09-usabilidad-accesibilidad.md) (Heurísticas Nielsen, checklist WCAG 2.1 AA, matriz hallazgos) | [📂 `semana-09/`](semana-09/README.md) | ✅ **Completado** |
+| **Semana 10** | Diseño para Movilidad | • [`semana-10-responsive-movilidad.md`](semana-10/semana-10-responsive-movilidad.md) (Breakpoints, layouts smartphone/tablet, escenarios móviles) | [📂 `semana-10/`](semana-10/README.md) | ✅ **Completado** |
+| **Semana 11** | Mockups y Prototipo Navegable | • [`semana-11-mockups-prototipo.md`](semana-11/semana-11-mockups-prototipo.md) (Tokens de diseño, componentes UI, pantallas desktop/tablet, micro-animaciones) | [📂 `semana-11/`](semana-11/README.md) | ✅ **Completado** |
+| **Semana 12** | **Segunda Evaluación Parcial** | Defensa teórica y práctica de Componentes, UX y Movilidad. | [📂 `semana-12/`](semana-12/README.md) | ⏳ **Pendiente** |
 
 ---
 
@@ -59,6 +59,8 @@ La documentación se encuentra estructurada modularmente en carpetas dedicadas p
 | **📊 Diagrama de Gantt Completo (1–18)** | Cronograma oficial detallado por bloques, hitos críticos, fechas y trazabilidad. | [`gantt-rbac-completo.md`](gantt-rbac-completo.md) |
 | **Asignación y Avance Semanas 1 y 2** | Ficha técnica individual, DoD, flujo Git Worktree y consolidación de S1 y S2. | [`asignacion-individual-semana-1-2.md`](asignacion-individual-semana-1-2.md) |
 | **Asignación y Avance Semanas 3, 4 y 5** | Consolidación técnica Parcial 1: C4, capas, repositorio, API REST y plan Git. | [`asignacion-individual-semana-3-5.md`](asignacion-individual-semana-3-5.md) |
+| **Asignación y Avance Semanas 7, 8 y 9** | Consolidación técnica Parcial 2: Componentes, Refactorización SOLID, UX y Accesibilidad WCAG 2.1 AA. | [`asignacion-individual-semana-7-9.md`](asignacion-individual-semana-7-9.md) |
+| **Asignación y Avance Semanas 10 y 11** | Consolidación técnica Parcial 2: Diseño Responsive, Breakpoints, Tokens y Mockups de Alta Fidelidad. | [`asignacion-individual-semana-10-11.md`](asignacion-individual-semana-10-11.md) |
 | **Declaración Transparente de Uso de IA** | Bitácora ética de prompts, intervenciones de ingeniería y commits asociados. | [`Planificacion/declaracion-ia-y-prompts.md`](Planificacion/declaracion-ia-y-prompts.md) |
 | **Plan Técnico de Implementación** | Resumen de stack, componentes y migraciones iniciales. | [`Planificacion/implementation_plan.md`](Planificacion/implementation_plan.md) |
 
